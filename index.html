@@ -6,13 +6,14 @@
     <title>Student Love Language Finder</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
     <main class="container">
         <header>
             <h1>Student Love Language Finder</h1>
-            <p>Masukkan NPM untuk melihat profil Love Language lengkap dengan persentase.</p>
+            <p>Masukkan NPM untuk melihat profil lengkap & statistik angkatan.</p>
         </header>
 
         <div class="search-box">
@@ -23,7 +24,15 @@
         <div id="resultContainer" class="result-wrapper"></div>
 
         <div id="dashboardContainer" class="dashboard-section">
+            <h2 class="dashboard-title">📊 Statistik Love Language per Jurusan</h2>
+            
+            <div id="majorTabs" class="tabs-container">
+                </div>
+
+            <div class="chart-wrapper">
+                <canvas id="llChart"></canvas>
             </div>
+        </div>
     </main>
 
     <script src="script.js"></script>
