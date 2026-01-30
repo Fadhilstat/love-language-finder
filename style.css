@@ -1,14 +1,16 @@
+/* --- KONFIGURASI WARNA & FONT --- */
 :root {
-    --bg-color: #FFF0F5;       /* Light Pink Background */
-    --primary-color: #D63384;  /* Deep Pink */
-    --accent-color: #FF8FAB;   /* Soft Pink */
-    --text-dark: #333;
-    --text-gray: #666;
-    --card-bg: #FFFFFF;
-    --shadow: 0 8px 24px rgba(214, 51, 132, 0.15);
+    --bg-color: #FFF0F5;       /* Background Pink Lembut */
+    --primary-color: #D63384;  /* Pink Tua (Warna Utama) */
+    --accent-color: #FF8FAB;   /* Pink Muda (Aksen) */
+    --text-dark: #333333;      /* Teks Gelap */
+    --text-gray: #666666;      /* Teks Abu-abu */
+    --card-bg: #FFFFFF;        /* Background Kartu Putih */
+    --shadow: 0 8px 24px rgba(214, 51, 132, 0.15); /* Bayangan Soft */
     --font-main: 'Poppins', sans-serif;
 }
 
+/* --- RESET & GLOBAL --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -22,15 +24,16 @@ body {
 }
 
 .container {
-    max-width: 700px;
+    max-width: 700px; /* Lebar konten maksimal */
     width: 100%;
 }
 
+/* --- HEADER --- */
 header { text-align: center; margin-bottom: 30px; }
-header h1 { color: var(--primary-color); margin-bottom: 10px; }
-header p { color: var(--text-gray); }
+header h1 { color: var(--primary-color); margin-bottom: 10px; font-weight: 700; }
+header p { color: var(--text-gray); font-size: 0.95rem; }
 
-/* Search Box */
+/* --- SEARCH BOX --- */
 .search-box {
     display: flex;
     gap: 10px;
@@ -44,9 +47,13 @@ input {
     border-radius: 12px;
     outline: none;
     font-size: 1rem;
+    font-family: var(--font-main);
+    transition: border-color 0.3s;
 }
 
-button {
+input:focus { border-color: var(--primary-color); }
+
+button#searchBtn {
     padding: 14px 24px;
     background-color: var(--primary-color);
     color: white;
@@ -54,12 +61,12 @@ button {
     border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.2s;
+    transition: transform 0.2s, opacity 0.2s;
 }
 
-button:hover { opacity: 0.9; transform: translateY(-2px); }
+button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 
-/* --- RESULT CARD --- */
+/* --- RESULT CARD (KARTU HASIL) --- */
 .card {
     background: var(--card-bg);
     padding: 30px;
@@ -67,6 +74,7 @@ button:hover { opacity: 0.9; transform: translateY(-2px); }
     box-shadow: var(--shadow);
     animation: slideUp 0.5s ease;
     margin-bottom: 40px;
+    border: 1px solid #FFF;
 }
 
 .student-info {
@@ -75,73 +83,132 @@ button:hover { opacity: 0.9; transform: translateY(-2px); }
     margin-bottom: 20px;
     text-align: center;
 }
-.student-info h2 { color: var(--primary-color); font-size: 1.8rem; }
-.student-info .major { color: var(--text-gray); font-weight: 500; }
+.student-info h2 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 5px; }
+.student-info .major { color: var(--text-gray); font-weight: 500; background: #FFF0F5; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
 
-/* Progress Bars */
-.progress-section { margin: 20px 0; }
+/* Judul Love Language */
+.ll-title {
+    font-size: 1.6rem;
+    color: var(--text-dark);
+    margin: 20px 0 5px;
+    text-align: center;
+}
+
+/* --- PROGRESS BARS (PERSENTASE) --- */
+.progress-section { margin: 25px 0; }
 .progress-item { margin-bottom: 12px; }
+
 .progress-label {
     display: flex;
     justify-content: space-between;
     font-size: 0.9rem;
     margin-bottom: 5px;
     color: var(--text-dark);
+    font-weight: 500;
 }
+
 .progress-bar-bg {
     background-color: #eee;
     height: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
 }
+
 .progress-bar-fill {
     height: 100%;
-    background-color: var(--accent-color);
-    border-radius: 5px;
+    background-color: var(--accent-color); /* Default color */
+    border-radius: 10px;
     transition: width 1s ease-out;
 }
 
-/* Detail Sections */
-.ll-title { font-size: 1.4rem; color: var(--text-dark); margin: 20px 0 10px; }
-.section-block { margin-bottom: 20px; }
-.section-block h3 { color: var(--primary-color); font-size: 1rem; text-transform: uppercase; margin-bottom: 8px; }
+/* --- DETAIL SECTION (TEXT) --- */
+.section-block { margin-bottom: 25px; }
+.section-block h3 {
+    color: var(--primary-color);
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    border-left: 3px solid var(--primary-color);
+    padding-left: 10px;
+}
 .section-block p, .section-block li { font-size: 0.95rem; line-height: 1.6; color: var(--text-gray); }
-.section-block ul { margin-left: 20px; }
+.section-block ul { margin-left: 20px; list-style-type: disc; }
+.section-block li { margin-bottom: 5px; }
 
-/* --- DASHBOARD / LEADERBOARD --- */
+/* --- DASHBOARD SECTION (CHART AREA) --- */
 .dashboard-section {
     margin-top: 50px;
-    border-top: 2px solid #FFC2D1;
-    padding-top: 30px;
-}
-.dashboard-title { text-align: center; margin-bottom: 20px; color: var(--primary-color); }
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    border-top: 2px dashed #FFC2D1; /* Garis pemisah putus-putus */
+    padding-top: 40px;
 }
 
-.stat-card {
+.dashboard-title {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+}
+
+/* Tabs Container (Tombol Jurusan) */
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Agar tombol turun ke bawah di HP */
+}
+
+/* Gaya Tombol Jurusan */
+.tab-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    font-family: var(--font-main);
+}
+
+.tab-btn:hover {
+    background: #FFF0F5;
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(214, 51, 132, 0.4); /* Efek glow */
+}
+
+/* Container Grafik (Canvas Wrapper) */
+.chart-wrapper {
     background: white;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 20px;
     box-shadow: var(--shadow);
-    text-align: center;
+    width: 100%;
+    height: 400px; /* Tinggi pasti agar grafik tidak gepeng */
+    position: relative;
+    border: 1px solid #f0f0f0;
 }
-.stat-card h3 { color: var(--text-dark); margin-bottom: 15px; font-size: 1.1rem; }
-.stat-highlight { 
-    background: #FFF0F5; 
-    padding: 10px; 
-    border-radius: 10px; 
-    margin-bottom: 10px;
-}
-.stat-highlight strong { display: block; color: var(--primary-color); font-size: 1.1rem; }
-.stat-list { list-style: none; text-align: left; font-size: 0.85rem; padding-left: 10px; color: #666; }
 
-.error-msg { text-align: center; color: #E63946; font-weight: 600; padding: 20px; }
+/* --- UTILITIES --- */
+.error-msg { text-align: center; color: #E63946; font-weight: 600; padding: 20px; background: #ffebeb; border-radius: 10px; }
 
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Mobile */
+@media (max-width: 480px) {
+    body { padding: 20px 15px; }
+    .card { padding: 20px; }
+    header h1 { font-size: 1.5rem; }
+    .chart-wrapper { height: 300px; } /* Grafik lebih pendek di HP */
+    .tab-btn { padding: 8px 15px; font-size: 0.8rem; }
 }
