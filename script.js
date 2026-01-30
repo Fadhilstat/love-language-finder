@@ -176,18 +176,20 @@ const students = [
 const searchBtn = document.getElementById('searchBtn');
 const npmInput = document.getElementById('npmInput');
 const resultContainer = document.getElementById('resultContainer');
-const dashboardContainer = document.getElementById('dashboardContainer');
+const majorTabs = document.getElementById('majorTabs');
+let myChart = null; // Variabel untuk menyimpan instance grafik
 
 // Init Dashboard on Load
-document.addEventListener('DOMContentLoaded', renderDashboard);
+document.addEventListener('DOMContentLoaded', () => {
+    initDashboard(); // Jalankan dashboard grafik
+});
+
 searchBtn.addEventListener('click', findStudent);
 npmInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') findStudent(); });
 
+// --- FUNGSI PENCARIAN (Tetap Sama) ---
 function findStudent() {
-    // 1. Ambil input dan bersihkan spasi di awal/akhir
     const inputNpm = npmInput.value.trim();
-    
-    // 2. Bersihkan container hasil
     resultContainer.innerHTML = '';
 
     if (!inputNpm) {
@@ -195,37 +197,25 @@ function findStudent() {
         return;
     }
 
-    // 3. LOGIC BARU: Pencarian yang lebih fleksibel
-    // Kita pastikan data NPM di database & input sama-sama dianggap String
     const student = students.find(s => String(s.npm).trim() === String(inputNpm));
 
     if (student) {
-        // --- KODE SAMA SEPERTI SEBELUMNYA ---
-        // Gunakan logika fallback jika tipe love language tidak persis sama huruf besar/kecilnya
         let typeKey = student.type;
-        // Cek apakah key ada di llData, jika tidak, cari yang mirip atau default
         if (!llData[typeKey]) {
-            // Coba cari case-insensitive
             const foundKey = Object.keys(llData).find(k => k.toLowerCase() === typeKey.toLowerCase());
-            typeKey = foundKey || "Quality Time"; // Default ke Quality Time jika error
+            typeKey = foundKey || "Quality Time";
         }
-
         const content = llData[typeKey]; 
         
-        // Generate Progress Bars
         const percentagesHTML = Object.entries(student.percentages).map(([key, val]) => `
             <div class="progress-item">
-                <div class="progress-label">
-                    <span>${key}</span>
-                    <span>${val}</span>
-                </div>
+                <div class="progress-label"><span>${key}</span><span>${val}</span></div>
                 <div class="progress-bar-bg">
                     <div class="progress-bar-fill" style="width: ${val}; background-color: var(--primary-color);"></div>
                 </div>
             </div>
         `).join('');
 
-        // Generate Details
         const needsList = content.needs.map(item => `<li>${item}</li>`).join('');
         const recList = content.recommendations.map(item => `<li>${item}</li>`).join('');
 
@@ -235,77 +225,115 @@ function findStudent() {
                     <h2>${student.name}</h2>
                     <span class="major">${student.major}</span>
                 </div>
-                
                 <h2 class="ll-title">${content.title}</h2>
-                <p style="text-align:center; color:#666; margin-bottom:20px;">Dominant Love Language</p>
-
-                <div class="progress-section">
-                    ${percentagesHTML}
-                </div>
-
-                <div class="section-block">
-                    <h3>Gambaran Umum</h3>
-                    <p>${content.overview}</p>
-                </div>
-
-                <div class="section-block">
-                    <h3>Yang Kamu Butuhkan</h3>
-                    <ul>${needsList}</ul>
-                </div>
-
-                <div class="section-block">
-                    <h3>Rekomendasi</h3>
-                    <ul>${recList}</ul>
-                </div>
+                <div class="progress-section">${percentagesHTML}</div>
+                <div class="section-block"><h3>Gambaran Umum</h3><p>${content.overview}</p></div>
+                <div class="section-block"><h3>Yang Kamu Butuhkan</h3><ul>${needsList}</ul></div>
+                <div class="section-block"><h3>Rekomendasi</h3><ul>${recList}</ul></div>
             </div>
         `;
-        
-        // Fitur Tambahan: Scroll otomatis ke hasil (bagus untuk HP)
         resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     } else {
-        resultContainer.innerHTML = `<p class="error-msg">NPM <strong>${inputNpm}</strong> tidak ditemukan. Coba periksa kembali.</p>`;
+        resultContainer.innerHTML = `<p class="error-msg">NPM <strong>${inputNpm}</strong> tidak ditemukan.</p>`;
     }
 }
 
-function renderDashboard() {
-    // 1. Group Data by Major and Love Language
+// --- FUNGSI DASHBOARD & CHART (BARU) ---
+function initDashboard() {
+    // 1. Hitung Statistik per Jurusan
     const stats = {};
-    
+    const allMajors = [];
+
     students.forEach(s => {
-        if (!stats[s.major]) stats[s.major] = {};
-        if (!stats[s.major][s.type]) stats[s.major][s.type] = 0;
-        stats[s.major][s.type]++;
+        const major = s.major;
+        const type = s.type;
+        
+        if (!stats[major]) {
+            stats[major] = { "Words of Affirmation": 0, "Quality Time": 0, "Acts of Service": 0, "Receiving Gifts": 0, "Physical Touch": 0 };
+            allMajors.push(major);
+        }
+        // Normalisasi nama tipe love language agar cocok dengan key
+        let cleanType = Object.keys(stats[major]).find(k => k.toLowerCase() === type.toLowerCase());
+        if(cleanType) stats[major][cleanType]++;
     });
 
-    // 2. Build HTML Grid
-    let html = '<h2 class="dashboard-title">📊 Statistik Love Language per Jurusan</h2><div class="stats-grid">';
+    // 2. Buat Tab Tombol Jurusan
+    // Hapus duplikat jurusan jika ada
+    const uniqueMajors = [...new Set(allMajors)].sort();
     
-    for (const [major, counts] of Object.entries(stats)) {
-        // Sort counts: Highest first
-        const sortedCounts = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-        const topLL = sortedCounts[0]; 
+    uniqueMajors.forEach((major, index) => {
+        const btn = document.createElement('button');
+        btn.innerText = major;
+        btn.className = 'tab-btn';
+        if (index === 0) btn.classList.add('active'); // Tombol pertama aktif default
+        
+        btn.onclick = () => {
+            // Ganti kelas aktif
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // Update Grafik
+            updateChart(major, stats[major]);
+        };
+        majorTabs.appendChild(btn);
+    });
 
-        const listItems = sortedCounts.slice(1, 4).map(item => 
-            `<li>${item[0]}: <strong>${item[1]}</strong></li>`
-        ).join('');
-
-        html += `
-            <div class="stat-card">
-                <h3>${major}</h3>
-                <div class="stat-highlight">
-                    <span>Dominan:</span>
-                    <strong>${topLL[0]}</strong>
-                    <span class="count">(${topLL[1]} mahasiswa)</span>
-                </div>
-                <ul class="stat-list">
-                    ${listItems}
-                </ul>
-            </div>
-        `;
+    // 3. Render Grafik Pertama Kali (Jurusan Pertama)
+    if (uniqueMajors.length > 0) {
+        updateChart(uniqueMajors[0], stats[uniqueMajors[0]]);
     }
-    html += '</div>';
-    dashboardContainer.innerHTML = html;
+}
 
+function updateChart(majorName, dataObj) {
+    const ctx = document.getElementById('llChart').getContext('2d');
+    
+    // Data Labels & Values
+    const labels = Object.keys(dataObj);
+    const dataValues = Object.values(dataObj);
+
+    // Hancurkan grafik lama jika ada (agar tidak menumpuk)
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    // Buat Grafik Baru
+    myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: `Jumlah Mahasiswa ${majorName}`,
+                data: dataValues,
+                backgroundColor: [
+                    '#FFADAD', // Words
+                    '#FFD6A5', // Quality Time
+                    '#FDFFB6', // Acts
+                    '#CAFFBF', // Gifts
+                    '#9BF6FF'  // Touch
+                ],
+                borderColor: '#FFC2D1',
+                borderWidth: 1,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 } // Agar angka sumbu Y bulat (tidak desimal)
+                }
+            },
+            plugins: {
+                legend: { display: false }, // Sembunyikan legenda kotak kecil di atas
+                title: {
+                    display: true,
+                    text: `Distribusi Love Language: ${majorName}`,
+                    font: { size: 16 }
+                }
+            }
+        }
+    });
 }
 
