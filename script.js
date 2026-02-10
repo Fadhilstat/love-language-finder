@@ -323,9 +323,9 @@ function initDashboard() {
     const uniqueMajors = [...new Set(allMajors)].sort();
 
     const btnGlobal = document.createElement('button');
-    btnGlobal.innerText = "Semua Jurusan";
+    btnGlobal.innerText = "Semua";
     btnGlobal.className = 'tab-btn active'; 
-    btnGlobal.onclick = () => { switchTab(btnGlobal, "Semua Jurusan", globalStats); };
+    btnGlobal.onclick = () => { switchTab(btnGlobal, "Semua", globalStats); };
     majorTabs.appendChild(btnGlobal);
 
     uniqueMajors.forEach(major => {
@@ -336,7 +336,7 @@ function initDashboard() {
         majorTabs.appendChild(btn);
     });
 
-    updateDashboardChart("Semua Jurusan", globalStats);
+    updateDashboardChart("Semua", globalStats);
 }
 
 function switchTab(btnElement, title, data) {
@@ -439,6 +439,7 @@ window.addEventListener('resize', () => {
 window.addEventListener('resize', () => {
     if (currentMajor && currentData) updateDashboardChart(currentMajor, currentData);
 });
+
 
 
 
