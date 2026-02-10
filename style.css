@@ -196,6 +196,24 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
     border: 1px solid #f0f0f0;
 }
 
+/* --- Tambahkan ini di bagian bawah style.css --- */
+
+/* Wadah Pie Chart di Kartu User */
+.user-chart-container {
+    position: relative;
+    height: 300px; /* Tinggi chart */
+    width: 100%;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Memastikan tulisan persentase rapi */
+.progress-section {
+    display: none; /* Sembunyikan progress bar lama */
+}
+
+
 /* --- UTILITIES --- */
 .error-msg { text-align: center; color: #E63946; font-weight: 600; padding: 20px; background: #ffebeb; border-radius: 10px; }
 
@@ -212,3 +230,4 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
     .chart-wrapper { height: 300px; } /* Grafik lebih pendek di HP */
     .tab-btn { padding: 8px 15px; font-size: 0.8rem; }
 }
+
