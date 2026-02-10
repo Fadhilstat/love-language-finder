@@ -174,19 +174,19 @@ const students = [
 
 // ... (Pastikan llData dan students ada di atas kode ini) ...
 
-// --- LOGIC UTAMA (REVISI PIE CHART & DASHBOARD GLOBAL) ---
+// ... (Pastikan llData dan students tetap ada di bagian atas) ...
+
+// --- LOGIC UTAMA (FINAL RESPONSIVE) ---
 const searchBtn = document.getElementById('searchBtn');
 const npmInput = document.getElementById('npmInput');
 const resultContainer = document.getElementById('resultContainer');
 const majorTabs = document.getElementById('majorTabs');
 
-// Variabel untuk menyimpan instance chart agar bisa di-reset/update
 let dashboardChart = null; 
 let userPieChart = null;
 let currentMajor = "";
 let currentData = {};
 
-// Init Dashboard on Load
 document.addEventListener('DOMContentLoaded', () => {
     initDashboard(); 
 });
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 searchBtn.addEventListener('click', findStudent);
 npmInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') findStudent(); });
 
-// --- 1. FUNGSI PENCARIAN (DENGAN PIE CHART) ---
+// --- 1. FUNGSI PENCARIAN (PIE CHART RESPONSIVE) ---
 function findStudent() {
     const inputNpm = npmInput.value.trim();
     resultContainer.innerHTML = '';
@@ -217,7 +217,6 @@ function findStudent() {
         const needsList = content.needs.map(item => `<li>${item}</li>`).join('');
         const recList = content.recommendations.map(item => `<li>${item}</li>`).join('');
 
-        // Inject HTML (Progress bar diganti Canvas Pie Chart)
         resultContainer.innerHTML = `
             <div class="card">
                 <div class="student-info">
@@ -236,9 +235,7 @@ function findStudent() {
             </div>
         `;
         
-        // Render Pie Chart setelah HTML masuk ke halaman
         renderUserPieChart(student.percentages);
-        
         resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     } else {
@@ -248,12 +245,12 @@ function findStudent() {
 
 function renderUserPieChart(percentages) {
     const ctx = document.getElementById('userLoveChart').getContext('2d');
-    
-    // Konversi data "25%" string menjadi angka 25
+    const isMobile = window.innerWidth < 480; // Deteksi HP
+
     const labels = Object.keys(percentages);
     const dataValues = Object.values(percentages).map(val => parseInt(val.replace('%', '')));
 
-    if (userPieChart) userPieChart.destroy(); // Hapus chart lama jika ada
+    if (userPieChart) userPieChart.destroy();
 
     userPieChart = new Chart(ctx, {
         type: 'pie',
@@ -269,31 +266,44 @@ function renderUserPieChart(percentages) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    bottom: isMobile ? 10 : 0 // Tambah jarak bawah di HP
+                }
+            },
             plugins: {
                 legend: {
-                    position: 'bottom',
-                    labels: { font: { family: "'Poppins', sans-serif", size: 12 }, boxWidth: 12 }
+                    position: 'bottom', // Legend di bawah
+                    align: 'center',
+                    labels: { 
+                        font: { 
+                            family: "'Poppins', sans-serif", 
+                            size: isMobile ? 10 : 12, // Font kecil di HP (10px), Desktop (12px)
+                            weight: '500'
+                        }, 
+                        boxWidth: isMobile ? 10 : 15, // Kotak warna lebih kecil di HP
+                        padding: isMobile ? 10 : 20   // Jarak antar item lebih rapat di HP
+                    }
                 },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
                             return ` ${context.label}: ${context.raw}%`;
                         }
-                    }
+                    },
+                    bodyFont: { size: 13 }
                 }
             }
         }
     });
 }
 
-// --- 2. FUNGSI DASHBOARD (DENGAN "SEMUA JURUSAN") ---
+// --- 2. FUNGSI DASHBOARD (BAR CHART RESPONSIVE) ---
 function initDashboard() {
-    // Siapkan wadah statistik
     const stats = {};
     const globalStats = { "Words of Affirmation": 0, "Quality Time": 0, "Acts of Service": 0, "Receiving Gifts": 0, "Physical Touch": 0 };
     const allMajors = [];
 
-    // Hitung data
     students.forEach(s => {
         const major = s.major;
         const type = s.type;
@@ -303,62 +313,51 @@ function initDashboard() {
             allMajors.push(major);
         }
         
-        // Normalisasi key (mencegah error huruf besar/kecil)
         let cleanType = Object.keys(stats[major]).find(k => k.toLowerCase() === type.toLowerCase());
-        
         if(cleanType) {
-            stats[major][cleanType]++;     // Tambah ke jurusan
-            globalStats[cleanType]++;      // Tambah ke global
+            stats[major][cleanType]++;     
+            globalStats[cleanType]++;      
         }
     });
 
-    // Urutkan Jurusan
     const uniqueMajors = [...new Set(allMajors)].sort();
 
-    // 1. Buat Tombol "SEMUA JURUSAN" (Global)
     const btnGlobal = document.createElement('button');
     btnGlobal.innerText = "Semua Jurusan";
-    btnGlobal.className = 'tab-btn active'; // Default aktif
-    btnGlobal.onclick = () => {
-        switchTab(btnGlobal, "Semua Jurusan", globalStats);
-    };
+    btnGlobal.className = 'tab-btn active'; 
+    btnGlobal.onclick = () => { switchTab(btnGlobal, "Semua Jurusan", globalStats); };
     majorTabs.appendChild(btnGlobal);
 
-    // 2. Buat Tombol Per Jurusan
     uniqueMajors.forEach(major => {
         const btn = document.createElement('button');
         btn.innerText = major;
         btn.className = 'tab-btn';
-        btn.onclick = () => {
-            switchTab(btn, major, stats[major]);
-        };
+        btn.onclick = () => { switchTab(btn, major, stats[major]); };
         majorTabs.appendChild(btn);
     });
 
-    // Render Grafik Awal (Global)
     updateDashboardChart("Semua Jurusan", globalStats);
 }
 
 function switchTab(btnElement, title, data) {
-    // Reset class active
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btnElement.classList.add('active');
-    // Update Chart
     updateDashboardChart(title, data);
 }
 
-// Fungsi Update Chart Dashboard (Bar Chart)
 function updateDashboardChart(majorName, dataObj) {
     currentMajor = majorName;
     currentData = dataObj;
 
     const ctx = document.getElementById('llChart').getContext('2d');
     const isMobile = window.innerWidth < 768;
-    const fontSize = isMobile ? 10 : 13;
+    // Ukuran font label Sumbu X dan Y
+    const fontSize = isMobile ? 9 : 12; 
 
-    // Responsive Label (Multiline)
     const rawLabels = Object.keys(dataObj);
     const dataValues = Object.values(dataObj);
+    
+    // Label Multiline Cerdas (1 Baris Desktop, 2 Baris HP)
     const responsiveLabels = rawLabels.map(label => {
         if (!isMobile) return label;
         if (label === "Words of Affirmation") return ["Words of", "Affirmation"];
@@ -376,38 +375,71 @@ function updateDashboardChart(majorName, dataObj) {
         data: {
             labels: responsiveLabels,
             datasets: [{
+                // Label ini tidak ditampilkan di Legend, tapi muncul di Tooltip
                 label: 'Jumlah Mahasiswa',
                 data: dataValues,
                 backgroundColor: ['#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF'],
                 borderColor: '#FFC2D1',
                 borderWidth: 2,
-                borderRadius: isMobile ? 6 : 10
+                borderRadius: isMobile ? 4 : 8,
+                barPercentage: isMobile ? 0.7 : 0.6
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { ticks: { font: { size: fontSize, family: "'Poppins', sans-serif" } } },
-                y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: fontSize } } }
+                x: { 
+                    ticks: { 
+                        font: { size: fontSize, family: "'Poppins', sans-serif" },
+                        maxRotation: 0, // Mencegah teks miring
+                        minRotation: 0
+                    } 
+                },
+                y: { 
+                    beginAtZero: true, 
+                    ticks: { stepSize: 1, font: { size: fontSize } } 
+                }
             },
             plugins: {
-                legend: { display: false },
+                // Legend di Bar Chart dimatikan karena sudah ada Label di bawah (Sumbu X)
+                legend: { display: false }, 
+                tooltip: {
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 14 },
+                    padding: 10
+                },
                 title: {
                     display: true,
-                    text: `Statistik: ${majorName}`,
-                    font: { size: isMobile ? 14 : 18, family: "'Poppins', sans-serif" },
-                    color: '#D63384'
+                    text: isMobile ? `Statistik: ${majorName}` : `Statistik Love Language: ${majorName}`,
+                    font: { size: isMobile ? 14 : 18, family: "'Poppins', sans-serif", weight: '600' },
+                    color: '#D63384',
+                    padding: { bottom: 20 }
                 }
             }
         }
     });
 }
 
+// Auto Resize Listener (Menyesuaikan ulang saat HP diputar/layar berubah)
+window.addEventListener('resize', () => {
+    // Reload pie chart user jika ada data student yang sedang aktif
+    const inputNpm = document.getElementById('npmInput').value.trim();
+    if(inputNpm && students.find(s => s.npm === inputNpm)) {
+        // Kita biarkan user mencari ulang untuk refresh pie chart agar tidak glitchy,
+        // atau biarkan responsif bawaan chart.js bekerja.
+    }
+    
+    // Reload dashboard chart
+    if (currentMajor && currentData) updateDashboardChart(currentMajor, currentData);
+});
+
+
 // Auto Resize Listener
 window.addEventListener('resize', () => {
     if (currentMajor && currentData) updateDashboardChart(currentMajor, currentData);
 });
+
 
 
 
