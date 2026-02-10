@@ -1,26 +1,97 @@
-// --- DATABASE 1: DESKRIPSI LOVE LANGUAGE (FORMAT BARU: JARAK PER KALIMAT) ---
+// --- DATABASE 1: DESKRIPSI LOVE LANGUAGE (FORMAT BARU DENGAN SUB-JUDUL) ---
 const llData = {
     "Words of Affirmation": {
         title: "🌟 Words of Affirmation",
-        description: "Kamu adalah orang yang membutuhkan kata-kata positif dari orang terdekat untuk tetap semangat menjalani hari!<br><br>Kata-kata penyemangat dari orang terdekat adalah salah satu kekuatan untuk menghadapi keterpurukan kamu.<br><br>Ketika kamu berhasil menyelesaikan suatu pekerjaan atau berhasil mencapai sesuatu, pujian dari teman terdekat akan membuat kamu semakin bersemangat.<br><br>Selalu optimis dengan kata-kata afirmatif ketika mengerjakan tugas bersama teman akan sangat mendorong semangat kamu dan orang terdekat kamu!"
+        description: `
+            <div style="text-align: center; font-weight: 600; margin-bottom: 25px; color: #D63384; font-size: 1.1rem;">
+                Kamu adalah orang yang membutuhkan kata-kata positif dari orang terdekat untuk tetap semangat menjalani hari!
+            </div>
+            
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">What You Need</h3>
+            <p style="margin-bottom: 20px;">
+                Kata-kata penyemangat dari orang terdekat adalah salah satu kekuatan untuk menghadapi keterpurukan kamu. Ketika kamu berhasil menyelesaikan suatu pekerjaan atau berhasil mencapai sesuatu, pujian dari teman terdekat akan membuat kamu semakin bersemangat.
+            </p>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">Recommendation for You</h3>
+            <p>
+                Selalu optimis dengan kata-kata afirmatif ketika mengerjakan tugas bersama teman akan sangat mendorong semangat kamu dan orang terdekat kamu!
+            </p>
+        `
     },
     "Quality Time": {
         title: "⏰ Quality Time",
-        description: "Kamu adalah orang yang butuh kehadiran penuh dan perhatian yang tidak terbagi dari orang terdekat dalam suatu interaksi!<br><br>Menyusun rencana bepergian dengan teman terdekat adalah salah satu sumber kesenanganmu.<br><br>Tak hanya itu, sebatas obrolan santai dengan cerita kamu didengar secara saksama oleh teman terdekat akan membuat kamu merasa sangat dihargai.<br><br>Belajar bersama dan menyelesaikan tugas bersama teman terdekat akan sangat menyenangkan untuk kamu lakukan!"
+        description: `
+            <div style="text-align: center; font-weight: 600; margin-bottom: 25px; color: #D63384; font-size: 1.1rem;">
+                Kamu adalah orang yang butuh kehadiran penuh dan perhatian yang tidak terbagi dari orang terdekat dalam suatu interaksi!
+            </div>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">What You Need</h3>
+            <p style="margin-bottom: 20px;">
+                Menyusun rencana bepergian dengan teman terdekat adalah salah satu sumber kesenanganmu. Tak hanya itu, sebatas obrolan santai dengan cerita kamu didengar secara saksama oleh teman terdekat akan membuat kamu merasa sangat dihargai.
+            </p>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">Recommendation for You</h3>
+            <p>
+                Belajar bersama dan menyelesaikan tugas bersama teman terdekat akan sangat menyenangkan untuk kamu lakukan!
+            </p>
+        `
     },
     "Acts of Service": {
         title: "🤝 Acts of Service",
-        description: "Kamu adalah orang yang merasa dihargai ketika ada orang terdekat yang menolong kamu saat kesulitan!<br><br>Ketika sedang kesulitan dalam belajar, kamu akan merasa sangat senang jika ada teman terdekat yang membantu menjelaskan materi kepada kamu.<br><br>Begitu pun juga saat mengerjakan tugas kelompok atau project, kontribusi nyata teman yang inisiatif dan solutif akan membuat kamu merasa dihargai.<br><br>Usaha kamu dalam membantu teman kamu yang sedang kesulitan akan mempererat hubungan pertemanan kamu untuk jangka waktu panjang!"
+        description: `
+            <div style="text-align: center; font-weight: 600; margin-bottom: 25px; color: #D63384; font-size: 1.1rem;">
+                Kamu adalah orang yang merasa dihargai ketika ada orang terdekat yang menolong kamu saat kesulitan!
+            </div>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">What You Need</h3>
+            <p style="margin-bottom: 20px;">
+                Ketika sedang kesulitan dalam belajar, kamu akan merasa sangat senang jika ada teman terdekat yang membantu menjelaskan materi kepada kamu. Begitu pun juga saat mengerjakan tugas kelompok atau project, kontribusi nyata teman yang inisiatif dan solutif akan membuat kamu merasa dihargai.
+            </p>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">Recommendation for You</h3>
+            <p>
+                Usaha kamu dalam membantu teman kamu yang sedang kesulitan akan mempererat hubungan pertemanan kamu untuk jangka waktu panjang!
+            </p>
+        `
     },
     "Receiving Gifts": {
         title: "🎁 Receiving Gifts",
-        description: "Kamu adalah orang yang merasa disayangi ketika ada orang terdekat yang memberikan hadiah atau kenangan kecil kepada kamu!<br><br>Kamu merasa senang ketika mendapat hadiah dari teman terdekat untuk disimpan dan dikenang di kemudian hari.<br><br>Kejutan kecil yang disiapkan oleh teman terdekat ketika hari spesial kamu juga berkesan untuk kamu.<br><br>Teman terdekat kamu akan sangat senang dan termotivasi saat diberi pernak-pernik atau aksesoris oleh kamu untuk digunakan setiap hari!"
+        description: `
+            <div style="text-align: center; font-weight: 600; margin-bottom: 25px; color: #D63384; font-size: 1.1rem;">
+                Kamu adalah orang yang merasa disayangi ketika ada orang terdekat yang memberikan hadiah atau kenangan kecil kepada kamu!
+            </div>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">What You Need</h3>
+            <p style="margin-bottom: 20px;">
+                Kamu merasa senang ketika mendapat hadiah dari teman terdekat untuk disimpan dan dikenang di kemudian hari. Kejutan kecil yang disiapkan oleh teman terdekat ketika hari spesial kamu juga berkesan untuk kamu.
+            </p>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">Recommendation for You</h3>
+            <p>
+                Teman terdekat kamu akan sangat senang dan termovitasi saat diberi pernak-pernik atau aksesoris oleh kamu untuk digunakan setiap hari!
+            </p>
+        `
     },
     "Physical Touch": {
         title: "🤍 Physical Touch",
-        description: "Kamu adalah orang yang merasa disayangi ketika mendapat dukungan sentuhan fisik yang hangat dari orang terdekat!<br><br>Pelukan hangat dari orang terdekat ketika kamu sedang terpuruk adalah suatu hal yang kamu butuhkan.<br><br>Ketika berhasil menyelesaikan suatu pekerjaan, tepukan bahu atau jabat tangan dari teman terdekat adalah salah satu cara kamu merasa dihargai.<br><br>Mungkin tidak semuanya nyaman untuk melakukan kontak fisik, tetapi sentuhan kecil seperti tos akan membuat orang sekitar kamu merasa dihargai!"
+        description: `
+            <div style="text-align: center; font-weight: 600; margin-bottom: 25px; color: #D63384; font-size: 1.1rem;">
+                Kamu adalah orang yang merasa disayangi ketika mendapat dukungan sentuhan fisik yang hangat dari orang terdekat!
+            </div>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">What You Need</h3>
+            <p style="margin-bottom: 20px;">
+                Pelukan hangat dari orang terdekat ketika kamu sedang terpuruk adalah suatu hal yang kamu butuhkan. Ketika berhasil menyelesaikan suatu pekerjaan, tepukan bahu atau jabat tangan dari teman terdekat adalah salah satu cara kamu merasa dihargai.
+            </p>
+
+            <h3 style="color: #333; font-size: 1rem; margin-bottom: 8px; border-left: 4px solid #FF8FAB; padding-left: 10px;">Recommendation for You</h3>
+            <p>
+                Mungkin tidak semuanya nyaman untuk melakukan kontak fisik, tetapi sentuhan kecil seperti tos akan membuat orang sekitar kamu merasa dihargai!
+            </p>
+        `
     }
 };
+
 
 
 // --- DATABASE 2: DATA MAHASISWA (Generated from CSV) ---
@@ -426,6 +497,7 @@ window.addEventListener('resize', () => {
 window.addEventListener('resize', () => {
     if (currentMajor && currentData) updateDashboardChart(currentMajor, currentData);
 });
+
 
 
 
