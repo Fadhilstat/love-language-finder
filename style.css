@@ -231,3 +231,47 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
     .tab-btn { padding: 8px 15px; font-size: 0.8rem; }
 }
 
+/* --- PIE CHART & DASHBOARD UTILS --- */
+
+/* Wadah Pie Chart di Kartu User */
+.user-chart-container {
+    position: relative;
+    height: 300px; /* Default Desktop */
+    width: 100%;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Memastikan tulisan persentase rapi */
+.progress-section {
+    display: none; 
+}
+
+/* --- UTILITIES --- */
+.error-msg { text-align: center; color: #E63946; font-weight: 600; padding: 20px; background: #ffebeb; border-radius: 10px; }
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RESPONSIVE MOBILE (HP) --- */
+@media (max-width: 480px) {
+    body { padding: 20px 15px; }
+    
+    .card { padding: 20px; }
+    
+    header h1 { font-size: 1.5rem; }
+    
+    /* Tombol lebih kecil di HP */
+    .tab-btn { padding: 8px 12px; font-size: 0.75rem; margin-bottom: 5px; }
+    
+    /* Grafik Batang lebih pendek di HP */
+    .chart-wrapper { height: 280px; } 
+    
+    /* PENTING: Pie Chart Container lebih TINGGI di HP 
+       agar Legend di bawahnya tidak terpotong/sempit */
+    .user-chart-container { height: 380px; } 
+}
+
