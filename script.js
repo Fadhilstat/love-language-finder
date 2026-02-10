@@ -266,14 +266,15 @@ function findStudent() {
 
     if (student) {
         let typeKey = student.type;
-        // Fallback jika ada perbedaan penulisan huruf besar/kecil
         if (!llData[typeKey]) {
             const foundKey = Object.keys(llData).find(k => k.toLowerCase() === typeKey.toLowerCase());
             typeKey = foundKey || "Quality Time";
         }
         const content = llData[typeKey]; 
         
-        // Inject HTML (Hanya menampilkan Judul, Pie Chart, dan Deskripsi Paragraf)
+        // Inject HTML
+        // Perhatikan bagian ${content.description} tidak lagi dibungkus <p>
+        // karena di dalam datanya sudah ada tag HTML sendiri.
         resultContainer.innerHTML = `
             <div class="card">
                 <div class="student-info">
@@ -288,7 +289,7 @@ function findStudent() {
                 </div>
 
                 <div class="section-block description-text">
-                    <p>${content.description}</p>
+                    ${content.description}
                 </div>
             </div>
         `;
@@ -300,6 +301,7 @@ function findStudent() {
         resultContainer.innerHTML = `<p class="error-msg">NPM <strong>${inputNpm}</strong> tidak ditemukan.</p>`;
     }
 }
+
 
 function renderUserPieChart(percentages) {
     const ctx = document.getElementById('userLoveChart').getContext('2d');
@@ -497,6 +499,7 @@ window.addEventListener('resize', () => {
 window.addEventListener('resize', () => {
     if (currentMajor && currentData) updateDashboardChart(currentMajor, currentData);
 });
+
 
 
 
