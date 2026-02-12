@@ -1,4 +1,3 @@
-
 // --- DATABASE 1: DESKRIPSI LOVE LANGUAGE (FORMAT BARU DENGAN SUB-JUDUL) ---
 const llData = {
     "Words of Affirmation": {
@@ -378,7 +377,9 @@ function findStudent() {
 
 function renderUserPieChart(percentages) {
     const ctx = document.getElementById('userLoveChart').getContext('2d');
-    const isMobile = window.innerWidth < 480; // Deteksi HP
+    const width = window.innerWidth;
+    const isMobile = width < 480;
+    const isTablet = width < 768;
 
     // Create array of {label, value} and sort by value descending
     const dataArray = Object.entries(percentages).map(([key, val]) => ({
@@ -386,8 +387,20 @@ function renderUserPieChart(percentages) {
         value: parseInt(val.replace('%', ''))
     })).sort((a, b) => b.value - a.value);
 
-    const labels = dataArray.map(d => d.label);
+    let labels = dataArray.map(d => d.label);
     const dataValues = dataArray.map(d => d.value);
+
+    // Shorten labels on mobile
+    if (isMobile) {
+        labels = labels.map(label => {
+            if (label === "Words of Affirmation") return "Words of\nAffirmation";
+            if (label === "Quality Time") return "Quality\nTime";
+            if (label === "Acts of Service") return "Acts of\nService";
+            if (label === "Receiving Gifts") return "Receiving\nGifts";
+            if (label === "Physical Touch") return "Physical\nTouch";
+            return label;
+        });
+    }
 
     // Pink shades from darkest to lightest
     const pinkShades = ['#D63384', '#E667A0', '#FF8FAB', '#FFC2D1', '#FFE7F0'];
@@ -404,8 +417,8 @@ function renderUserPieChart(percentages) {
                 data: dataValues,
                 backgroundColor: backgroundColor,
                 borderColor: '#fff',
-                borderWidth: 2,
-                borderRadius: 8
+                borderWidth: isMobile ? 1 : 2,
+                borderRadius: isMobile ? 4 : 6
             }]
         },
         options: {
@@ -417,7 +430,7 @@ function renderUserPieChart(percentages) {
                     beginAtZero: true,
                     max: 100,
                     ticks: {
-                        font: { size: isMobile ? 10 : 12, family: "'Poppins', sans-serif" },
+                        font: { size: isMobile ? 9 : (isTablet ? 10 : 11), family: "'Poppins', sans-serif" },
                         callback: function(value) {
                             return value + '%';
                         }
@@ -426,8 +439,8 @@ function renderUserPieChart(percentages) {
                 },
                 y: {
                     ticks: {
-                        font: { size: isMobile ? 9 : 12, family: "'Poppins', sans-serif", weight: '500' },
-                        padding: isMobile ? 8 : 12
+                        font: { size: isMobile ? 8 : (isTablet ? 9 : 11), family: "'Poppins', sans-serif", weight: '500' },
+                        padding: isMobile ? 4 : (isTablet ? 6 : 10)
                     },
                     grid: { display: false }
                 }
@@ -440,8 +453,8 @@ function renderUserPieChart(percentages) {
                             return ` ${context.raw}%`;
                         }
                     },
-                    bodyFont: { size: isMobile ? 11 : 13 },
-                    padding: 10,
+                    bodyFont: { size: isMobile ? 9 : (isTablet ? 10 : 12) },
+                    padding: isMobile ? 6 : 10,
                     backgroundColor: 'rgba(0,0,0,0.7)'
                 }
             }
@@ -547,20 +560,24 @@ function updateDashboardChart(majorName, dataObj) {
     currentData = dataObj;
 
     const ctx = document.getElementById('llChart').getContext('2d');
-    const isMobile = window.innerWidth < 768;
-    const fontSize = isMobile ? 9 : 12;
+    const width = window.innerWidth;
+    const isMobile = width < 480;
+    const isTablet = width < 768;
+    const fontSize = isMobile ? 8 : (isTablet ? 9 : 11);
 
     let labels = Object.keys(dataObj);
     let dataValues = Object.values(dataObj);
     
     const responsiveLabels = labels.map(label => {
-        if (!isMobile) return label;
-        if (label === "Words of Affirmation") return ["Words of", "Affirmation"];
-        if (label === "Quality Time") return ["Quality", "Time"];
-        if (label === "Acts of Service") return ["Acts of", "Service"];
-        if (label === "Receiving Gifts") return ["Receiving", "Gifts"];
-        if (label === "Physical Touch") return ["Physical", "Touch"];
-        return label.split(" ");
+        if (isMobile) {
+            if (label === "Words of Affirmation") return ["Words of", "Affirmation"];
+            if (label === "Quality Time") return ["Quality", "Time"];
+            if (label === "Acts of Service") return ["Acts of", "Service"];
+            if (label === "Receiving Gifts") return ["Receiving", "Gifts"];
+            if (label === "Physical Touch") return ["Physical", "Touch"];
+            return label.split(" ");
+        }
+        return label;
     });
     labels = responsiveLabels;
 
@@ -580,9 +597,9 @@ function updateDashboardChart(majorName, dataObj) {
                 data: dataValues,
                 backgroundColor: gradient,
                 borderColor: '#FFC2D1',
-                borderWidth: 2,
-                borderRadius: isMobile ? 4 : 8,
-                barPercentage: isMobile ? 0.7 : 0.6
+                borderWidth: isMobile ? 1 : 2,
+                borderRadius: isMobile ? 3 : 6,
+                barPercentage: isMobile ? 0.65 : 0.6
             }]
         },
         options: {
@@ -606,16 +623,16 @@ function updateDashboardChart(majorName, dataObj) {
             plugins: {
                 legend: { display: false }, 
                 tooltip: {
-                    titleFont: { size: 14 },
-                    bodyFont: { size: 14 },
-                    padding: 10
+                    titleFont: { size: isMobile ? 11 : (isTablet ? 12 : 13) },
+                    bodyFont: { size: isMobile ? 10 : (isTablet ? 11 : 12) },
+                    padding: isMobile ? 6 : 10
                 },
                 title: {
                     display: true,
                     text: `Dominan Love Language: ${majorName === "Semua" ? "Semua Jurusan" : getDisplayName(majorName)}`,
-                    font: { size: isMobile ? 14 : 18, family: "'Poppins', sans-serif", weight: '600' },
+                    font: { size: isMobile ? 12 : (isTablet ? 14 : 16), family: "'Poppins', sans-serif", weight: '600' },
                     color: '#D63384',
-                    padding: { bottom: 20 }
+                    padding: { bottom: isMobile ? 12 : (isTablet ? 14 : 16) }
                 }
             }
         }
@@ -632,16 +649,15 @@ function updateDashboardChart(majorName, dataObj) {
 }
 
 // Auto Resize Listener (Menyesuaikan ulang saat HP diputar/layar berubah)
+let resizeTimeout;
 window.addEventListener('resize', () => {
-    // Reload pie chart user jika ada data student yang sedang aktif
-    const inputNpm = document.getElementById('npmInput').value.trim();
-    if(inputNpm && students.find(s => s.npm === inputNpm)) {
-        // Kita biarkan user mencari ulang untuk refresh pie chart agar tidak glitchy,
-        // atau biarkan responsif bawaan chart.js bekerja.
-    }
-    
-    // Reload dashboard chart
-    if (currentMajor && currentData) updateDashboardChart(currentMajor, currentData);
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        // Reload dashboard chart when window is resized
+        if (currentMajor && currentData) {
+            updateDashboardChart(currentMajor, currentData);
+        }
+    }, 300); // Debounce resize events to avoid excessive re-renders
 });
 
 /* Toggle Calculation Box */
