@@ -1,4 +1,3 @@
-
 // --- DATABASE 1: DESKRIPSI LOVE LANGUAGE (FORMAT BARU DENGAN SUB-JUDUL) ---
 const llData = {
     "Words of Affirmation": {
