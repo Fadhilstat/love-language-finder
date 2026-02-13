@@ -1,5 +1,5 @@
 // ================================================================
-// BAGIAN 1: DATABASE DESKRIPSI LOVE LANGUAGE
+// 1. DATABASE DESKRIPSI LOVE LANGUAGE
 // ================================================================
 const llData = {
     "Words of Affirmation": {
@@ -95,7 +95,7 @@ const llData = {
 };
 
 // ================================================================
-// BAGIAN 2: DATA MAHASISWA (126 Data Lengkap)
+// 2. DATA MAHASISWA
 // ================================================================
 const students = [
     {"npm": "2406344605", "name": "Fadhil Rusydi Hafizh", "major": "Statistika", "type": "Quality Time", "percentages": {"Words of Affirmation": "25%", "Quality Time": "50%", "Acts of Service": "20%", "Receiving Gifts": "0%", "Physical Touch": "5%"}},
@@ -227,13 +227,14 @@ const students = [
 ];
 
 // ================================================================
-// BAGIAN 3: LOGIC & DASHBOARD
+// 3. LOGIC & DASHBOARD
 // ================================================================
 const searchBtn = document.getElementById('searchBtn');
 const npmInput = document.getElementById('npmInput');
 const resultContainer = document.getElementById('resultContainer');
 const majorTabs = document.getElementById('majorTabs');
 
+// Declare chart variables globally
 let dashboardChart = null; 
 let userPieChart = null;
 let currentMajor = "";
@@ -269,13 +270,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- LOGO PREVIEW ---
+    // --- LOGO PREVIEW LOGIC ---
     const logoImg1 = document.getElementById('logoImg1');
     const logoImg2 = document.getElementById('logoImg2');
     const logoUpload1 = document.getElementById('logoUpload1');
     const logoUpload2 = document.getElementById('logoUpload2');
 
-    // Default logo logic
     try {
         if (logoImg1) { logoImg1.src = 'LOGO HD-removebg-preview.jpg'; logoImg1.style.display = 'block'; }
         if (logoImg2) { logoImg2.src = 'Logo Biro Variansi.png'; logoImg2.style.display = 'block'; }
@@ -306,10 +306,22 @@ document.addEventListener('DOMContentLoaded', () => {
 function bindFinderCta() {
     const cta = document.querySelector('.finder-cta');
     const input = document.getElementById('npmInput');
+    const navBtnFinder = document.querySelector('.nav-btn[data-page="finder"]');
+    
     if (!cta || !input) return;
+    
     cta.addEventListener('click', () => {
-        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        input.focus({ preventScroll: true });
+        // If we are on home page, switch to finder first
+        const homePage = document.getElementById('homePage');
+        if (homePage && homePage.style.display !== 'none') {
+             if (navBtnFinder) navBtnFinder.click(); // Trigger nav switch
+        }
+        
+        // Then focus input
+        setTimeout(() => {
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            input.focus({ preventScroll: true });
+        }, 100);
     });
 }
 
@@ -323,6 +335,14 @@ function getDisplayName(major) {
 }
 
 // --- FUNGSI PENCARIAN (PIE CHART) ---
+// Add click listener
+if (searchBtn) {
+    searchBtn.addEventListener('click', findStudent);
+}
+if (npmInput) {
+    npmInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') findStudent(); });
+}
+
 function findStudent() {
     const inputNpm = npmInput.value.trim();
     resultContainer.innerHTML = '';
@@ -374,7 +394,6 @@ function renderUserPieChart(percentages) {
     const width = window.innerWidth;
     const isMobile = width < 480;
     
-    // Sort Data
     const dataArray = Object.entries(percentages).map(([key, val]) => ({
         label: key,
         value: parseInt(val.replace('%', ''))
@@ -383,7 +402,6 @@ function renderUserPieChart(percentages) {
     let labels = dataArray.map(d => d.label);
     const dataValues = dataArray.map(d => d.value);
 
-    // Multiline Labels for Mobile Pie Chart
     if (isMobile) {
         labels = labels.map(label => {
             if (label === "Words of Affirmation") return "Words of\nAffirmation";
@@ -451,24 +469,21 @@ function initDashboard() {
         }
     });
 
-    // Custom Order: Matematika -> Statistika -> Aktuaria
     const customOrder = ["Matematika", "Statistika", "Aktuaria"];
     
-    // 1. Tombol Semua Jurusan
     const btnGlobal = document.createElement('button');
     btnGlobal.innerText = "Semua Jurusan";
     btnGlobal.className = 'tab-btn active'; 
     btnGlobal.onclick = () => { switchTab(btnGlobal, "Semua", globalStats); };
-    majorTabs.appendChild(btnGlobal);
+    if(majorTabs) majorTabs.appendChild(btnGlobal);
 
-    // 2. Tombol Per Jurusan (Sesuai Order)
     customOrder.forEach(majorKey => {
         if (stats[majorKey]) {
             const btn = document.createElement('button');
             btn.innerText = getDisplayName(majorKey);
             btn.className = 'tab-btn';
             btn.onclick = () => { switchTab(btn, majorKey, stats[majorKey]); };
-            majorTabs.appendChild(btn);
+            if(majorTabs) majorTabs.appendChild(btn);
         }
     });
 
@@ -485,14 +500,20 @@ function switchTab(btnElement, title, data) {
     if (insightBox) {
         insightBox.innerHTML = `<strong>Insight:</strong> ${generateInsight(data, title)}`;
     }
-    document.getElementById("calculationBox").innerHTML = generateCalculationDetails(title, data);
+    const calcBox = document.getElementById("calculationBox");
+    if (calcBox) {
+        calcBox.innerHTML = generateCalculationDetails(title, data);
+    }
 }
 
 function updateDashboardChart(majorName, dataObj) {
     currentMajor = majorName;
     currentData = dataObj;
 
-    const ctx = document.getElementById('llChart').getContext('2d');
+    const chartCanvas = document.getElementById('llChart');
+    if (!chartCanvas) return; // Prevent error if chart element missing
+
+    const ctx = chartCanvas.getContext('2d');
     const width = window.innerWidth;
     const isMobile = width < 480;
     const isTablet = width < 768;
@@ -568,7 +589,9 @@ function updateDashboardChart(majorName, dataObj) {
     // Update Insight & Calc initially
     const insightBox = document.getElementById("insightBox");
     if (insightBox) insightBox.innerHTML = `<strong>Insight:</strong> ${generateInsight(dataObj, majorName)}`;
-    document.getElementById("calculationBox").innerHTML = generateCalculationDetails(majorName, dataObj);
+    
+    const calcBox = document.getElementById("calculationBox");
+    if (calcBox) calcBox.innerHTML = generateCalculationDetails(majorName, dataObj);
 }
 
 function generateInsight(dataObj, majorName) {
