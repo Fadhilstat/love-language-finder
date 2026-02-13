@@ -1,4 +1,6 @@
-// --- DATABASE 1: DESKRIPSI LOVE LANGUAGE (FORMAT BARU DENGAN SUB-JUDUL) ---
+// ================================================================
+// BAGIAN 1: DATABASE DESKRIPSI LOVE LANGUAGE
+// ================================================================
 const llData = {
     "Words of Affirmation": {
         title: "🌟 Words of Affirmation",
@@ -92,9 +94,9 @@ const llData = {
     }
 };
 
-
-
-// --- DATABASE 2: DATA MAHASISWA (Generated from CSV) ---
+// ================================================================
+// BAGIAN 2: DATA MAHASISWA (126 Data Lengkap)
+// ================================================================
 const students = [
     {"npm": "2406344605", "name": "Fadhil Rusydi Hafizh", "major": "Statistika", "type": "Quality Time", "percentages": {"Words of Affirmation": "25%", "Quality Time": "50%", "Acts of Service": "20%", "Receiving Gifts": "0%", "Physical Touch": "5%"}},
     {"npm": "2406358516", "name": "Adrian Dwi Mahendra", "major": "Statistika", "type": "Quality Time", "percentages": {"Words of Affirmation": "10%", "Quality Time": "70%", "Acts of Service": "10%", "Receiving Gifts": "10%", "Physical Touch": "0%"}},
@@ -224,7 +226,9 @@ const students = [
     {"npm": "2406408325", "name": "Firdha Nazla Soblia", "major": "Matematika", "type": "Acts of Service", "percentages": {"Words of Affirmation": "30%", "Quality Time": "30%", "Acts of Service": "40%", "Receiving Gifts": "0%", "Physical Touch": "0%"}}
 ];
 
-// --- LOGIC UTAMA (FINAL RESPONSIVE) ---
+// ================================================================
+// BAGIAN 3: LOGIC & DASHBOARD
+// ================================================================
 const searchBtn = document.getElementById('searchBtn');
 const npmInput = document.getElementById('npmInput');
 const resultContainer = document.getElementById('resultContainer');
@@ -234,7 +238,7 @@ let dashboardChart = null;
 let userPieChart = null;
 let currentMajor = "";
 let currentData = {};
-let currentMode = "dominan"; // Lock to dominan mode only
+let currentMode = "dominan"; 
 
 document.addEventListener('DOMContentLoaded', () => {
     initDashboard(); 
@@ -244,9 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const homePage = document.getElementById('homePage');
     const finderPage = document.getElementById('finderPage');
 
-    // ensure initial visibility: show home by default
     if (homePage && finderPage) {
-        // show home initially (matches HTML default)
         homePage.style.display = 'block';
         finderPage.style.display = 'none';
     }
@@ -258,47 +260,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const page = btn.dataset.page;
             if (page === 'home') {
-                if (homePage && finderPage) {
-                    homePage.style.display = 'block';
-                    finderPage.style.display = 'none';
-                }
+                homePage.style.display = 'block';
+                finderPage.style.display = 'none';
             } else {
-                if (homePage && finderPage) {
-                    homePage.style.display = 'none';
-                    finderPage.style.display = 'block';
-                }
+                homePage.style.display = 'none';
+                finderPage.style.display = 'block';
             }
         });
     });
 
-    // Chart is fixed to Bar only (radar removed per request)
-
-    // --- LOGO PREVIEW / DEFAULT LOGO ---
+    // --- LOGO PREVIEW ---
     const logoImg1 = document.getElementById('logoImg1');
     const logoImg2 = document.getElementById('logoImg2');
     const logoUpload1 = document.getElementById('logoUpload1');
     const logoUpload2 = document.getElementById('logoUpload2');
 
-    // Set default image for logo 1 if the file exists in project root
+    // Default logo logic
     try {
-        if (logoImg1) {
-            logoImg1.src = 'LOGO HD-removebg-preview.jpg';
-            logoImg1.style.width = '100%';
-            logoImg1.style.height = '100%';
-            logoImg1.style.objectFit = 'contain';
-        }
-        if (logoImg2) {
-            logoImg2.src = 'Logo Biro Variansi.png';
-            logoImg2.style.width = '100%';
-            logoImg2.style.height = '100%';
-            logoImg2.style.objectFit = 'contain';
-        }
-    } catch (e) {
-        // ignore if image cannot be loaded
-        console.warn('Logo preview init error', e);
-    }
+        if (logoImg1) { logoImg1.src = 'LOGO HD-removebg-preview.jpg'; logoImg1.style.display = 'block'; }
+        if (logoImg2) { logoImg2.src = 'Logo Biro Variansi.png'; logoImg2.style.display = 'block'; }
+    } catch (e) { console.warn(e); }
 
-    // When user selects a file, show preview in the placeholder
     if (logoUpload1 && logoImg1) {
         logoUpload1.addEventListener('change', (ev) => {
             const f = ev.target.files && ev.target.files[0];
@@ -311,20 +293,36 @@ document.addEventListener('DOMContentLoaded', () => {
             if (f) logoImg2.src = URL.createObjectURL(f);
         });
     }
-
-
+    
+    // Add calculation toggle
+    const calcBtn = document.getElementById('calcToggleBtn');
+    if (calcBtn) {
+        calcBtn.addEventListener('click', toggleCalculation);
+    }
+    bindFinderCta();
 });
 
-searchBtn.addEventListener('click', findStudent);
-npmInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') findStudent(); });
+// --- HELPER FUNCTIONS ---
+function bindFinderCta() {
+    const cta = document.querySelector('.finder-cta');
+    const input = document.getElementById('npmInput');
+    if (!cta || !input) return;
+    cta.addEventListener('click', () => {
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        input.focus({ preventScroll: true });
+    });
+}
 
-// --- 1. FUNGSI PENCARIAN (PIE CHART RESPONSIVE) ---
-// ... (Biarkan const students = [...] TETAP ADA DI SINI, JANGAN DIHAPUS) ...
+function getDisplayName(major) {
+    const displayMap = {
+        "Aktuaria": "Ilmu Aktuaria",
+        "Statistika": "Statistika",
+        "Matematika": "Matematika"
+    };
+    return displayMap[major] || major;
+}
 
-
-// --- LOGIC UTAMA (UPDATE TAMPILAN) ---
-// ... (Kode elemen DOM tetap sama) ...
-
+// --- FUNGSI PENCARIAN (PIE CHART) ---
 function findStudent() {
     const inputNpm = npmInput.value.trim();
     resultContainer.innerHTML = '';
@@ -344,9 +342,6 @@ function findStudent() {
         }
         const content = llData[typeKey]; 
         
-        // Inject HTML
-        // Perhatikan bagian ${content.description} tidak lagi dibungkus <p>
-        // karena di dalam datanya sudah ada tag HTML sendiri.
         resultContainer.innerHTML = `
             <div class="card">
                 <div class="student-info">
@@ -374,14 +369,12 @@ function findStudent() {
     }
 }
 
-
 function renderUserPieChart(percentages) {
     const ctx = document.getElementById('userLoveChart').getContext('2d');
     const width = window.innerWidth;
     const isMobile = width < 480;
-    const isTablet = width < 768;
-
-    // Create array of {label, value} and sort by value descending
+    
+    // Sort Data
     const dataArray = Object.entries(percentages).map(([key, val]) => ({
         label: key,
         value: parseInt(val.replace('%', ''))
@@ -390,7 +383,7 @@ function renderUserPieChart(percentages) {
     let labels = dataArray.map(d => d.label);
     const dataValues = dataArray.map(d => d.value);
 
-    // Shorten labels on mobile
+    // Multiline Labels for Mobile Pie Chart
     if (isMobile) {
         labels = labels.map(label => {
             if (label === "Words of Affirmation") return "Words of\nAffirmation";
@@ -402,109 +395,41 @@ function renderUserPieChart(percentages) {
         });
     }
 
-    // Pink shades from darkest to lightest
-    const pinkShades = ['#D63384', '#E667A0', '#FF8FAB', '#FFC2D1', '#FFE7F0'];
-    const backgroundColor = dataValues.map((val, idx) => pinkShades[idx % pinkShades.length]);
-
     if (userPieChart) userPieChart.destroy();
 
     userPieChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'pie',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Persentase (%)',
                 data: dataValues,
-                backgroundColor: backgroundColor,
+                backgroundColor: ['#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF'],
                 borderColor: '#fff',
-                borderWidth: isMobile ? 1 : 2,
-                borderRadius: isMobile ? 4 : 6
+                borderWidth: 2
             }]
         },
         options: {
-            indexAxis: 'y', // Horizontal bar
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    max: 100,
-                    ticks: {
-                        font: { size: isMobile ? 9 : (isTablet ? 10 : 11), family: "'Poppins', sans-serif" },
-                        callback: function(value) {
-                            return value + '%';
-                        }
-                    },
-                    grid: { color: "rgba(0,0,0,0.05)" }
-                },
-                y: {
-                    ticks: {
-                        font: { size: isMobile ? 8 : (isTablet ? 9 : 11), family: "'Poppins', sans-serif", weight: '500' },
-                        padding: isMobile ? 4 : (isTablet ? 6 : 10)
-                    },
-                    grid: { display: false }
-                }
-            },
+            layout: { padding: { bottom: isMobile ? 10 : 0 } },
             plugins: {
-                legend: { display: false },
+                legend: {
+                    position: 'bottom',
+                    labels: { 
+                        font: { family: "'Poppins', sans-serif", size: isMobile ? 10 : 12 },
+                        boxWidth: isMobile ? 10 : 12,
+                        padding: isMobile ? 10 : 20
+                    }
+                },
                 tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return ` ${context.raw}%`;
-                        }
-                    },
-                    bodyFont: { size: isMobile ? 9 : (isTablet ? 10 : 12) },
-                    padding: isMobile ? 6 : 10,
-                    backgroundColor: 'rgba(0,0,0,0.7)'
+                    callbacks: { label: (ctx) => ` ${ctx.label}: ${ctx.raw}%` }
                 }
             }
         }
     });
 }
 
-/* Animated counter helper */
-function animateValue(id, start, end, duration) {
-    const obj = document.getElementById(id);
-    if (!obj) return;
-    const range = end - start;
-    if (range === 0) { obj.textContent = end; return; }
-    const increment = end > start ? 1 : -1;
-    const stepTime = Math.max(Math.floor(duration / Math.abs(range)), 12);
-    let current = start;
-    const timer = setInterval(() => {
-        current += increment;
-        obj.textContent = current;
-        if (current === end) clearInterval(timer);
-    }, stepTime);
-}
-
-/* Generate simple insight from data object */
-function generateInsight(dataObj, majorName, mode = "dominan") {
-    if (!dataObj || Object.keys(dataObj).length === 0) return 'Tidak ada data untuk menghasilkan insight.';
-
-    let maxKey = Object.keys(dataObj).reduce((a,b) => dataObj[a] >= dataObj[b] ? a : b);
-    let minKey = Object.keys(dataObj).reduce((a,b) => dataObj[a] <= dataObj[b] ? a : b);
-    let maxVal = dataObj[maxKey];
-    let minVal = dataObj[minKey];
-
-    if (majorName === "Semua") {
-        return `Secara keseluruhan mahasiswa Departemen Matematika FMIPA UI cenderung memiliki dominasi '<strong>${maxKey}</strong>' dengan ${maxVal} mahasiswa, sementara '<strong>${minKey}</strong>' paling sedikit dimiliki.`;
-    }
-
-    return `Mahasiswa/i jurusan ${getDisplayName(majorName)} cenderung memiliki dominasi '<strong>${maxKey}</strong>' dengan ${maxVal} mahasiswa, sementara '<strong>${minKey}</strong>' paling sedikit dimiliki.`;
-}
-
-/* Display name mapping for majors */
-function getDisplayName(major) {
-    const displayMap = {
-        "Aktuaria": "Ilmu Aktuaria",
-        "Statistika": "Statistika",
-        "Matematika": "Matematika"
-    };
-    return displayMap[major] || major;
-}
-
-// --- 2. FUNGSI DASHBOARD (BAR CHART RESPONSIVE) ---
+// --- FUNGSI DASHBOARD (BAR CHART) ---
 function initDashboard() {
     const stats = {};
     const globalStats = { "Words of Affirmation": 0, "Quality Time": 0, "Acts of Service": 0, "Receiving Gifts": 0, "Physical Touch": 0 };
@@ -521,25 +446,30 @@ function initDashboard() {
         
         let cleanType = Object.keys(stats[major]).find(k => k.toLowerCase() === type.toLowerCase());
         if(cleanType) {
-            stats[major][cleanType]++;     
-            globalStats[cleanType]++;      
+            stats[major][cleanType]++;      
+            globalStats[cleanType]++;       
         }
     });
 
-    const uniqueMajors = [...new Set(allMajors)].sort();
-
+    // Custom Order: Matematika -> Statistika -> Aktuaria
+    const customOrder = ["Matematika", "Statistika", "Aktuaria"];
+    
+    // 1. Tombol Semua Jurusan
     const btnGlobal = document.createElement('button');
     btnGlobal.innerText = "Semua Jurusan";
     btnGlobal.className = 'tab-btn active'; 
     btnGlobal.onclick = () => { switchTab(btnGlobal, "Semua", globalStats); };
     majorTabs.appendChild(btnGlobal);
 
-    uniqueMajors.forEach(major => {
-        const btn = document.createElement('button');
-        btn.innerText = getDisplayName(major);
-        btn.className = 'tab-btn';
-        btn.onclick = () => { switchTab(btn, major, stats[major]); };
-        majorTabs.appendChild(btn);
+    // 2. Tombol Per Jurusan (Sesuai Order)
+    customOrder.forEach(majorKey => {
+        if (stats[majorKey]) {
+            const btn = document.createElement('button');
+            btn.innerText = getDisplayName(majorKey);
+            btn.className = 'tab-btn';
+            btn.onclick = () => { switchTab(btn, majorKey, stats[majorKey]); };
+            majorTabs.appendChild(btn);
+        }
     });
 
     updateDashboardChart("Semua", globalStats);
@@ -550,10 +480,13 @@ function switchTab(btnElement, title, data) {
     btnElement.classList.add('active');
     currentData = data;
     updateDashboardChart(title, data);
+    
+    const insightBox = document.getElementById("insightBox");
+    if (insightBox) {
+        insightBox.innerHTML = `<strong>Insight:</strong> ${generateInsight(data, title)}`;
+    }
+    document.getElementById("calculationBox").innerHTML = generateCalculationDetails(title, data);
 }
-
-/* Error Bar Plugin for 95% Confidence Interval */
-
 
 function updateDashboardChart(majorName, dataObj) {
     currentMajor = majorName;
@@ -565,8 +498,8 @@ function updateDashboardChart(majorName, dataObj) {
     const isTablet = width < 768;
     const fontSize = isMobile ? 8 : (isTablet ? 9 : 11);
 
-    let labels = Object.keys(dataObj);
-    let dataValues = Object.values(dataObj);
+    const labels = Object.keys(dataObj);
+    const dataValues = Object.values(dataObj);
     
     const responsiveLabels = labels.map(label => {
         if (isMobile) {
@@ -579,11 +512,9 @@ function updateDashboardChart(majorName, dataObj) {
         }
         return label;
     });
-    labels = responsiveLabels;
 
     if (dashboardChart) dashboardChart.destroy();
 
-    // Create gradient background
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, "#D63384");
     gradient.addColorStop(1, "#FF8FAB");
@@ -591,7 +522,7 @@ function updateDashboardChart(majorName, dataObj) {
     dashboardChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: responsiveLabels,
             datasets: [{
                 label: "Jumlah Mahasiswa",
                 data: dataValues,
@@ -607,11 +538,7 @@ function updateDashboardChart(majorName, dataObj) {
             maintainAspectRatio: false,
             scales: {
                 x: { 
-                    ticks: { 
-                        font: { size: fontSize, family: "'Poppins', sans-serif" },
-                        maxRotation: 0,
-                        minRotation: 0
-                    },
+                    ticks: { font: { size: fontSize, family: "'Poppins', sans-serif" }, maxRotation: 0, minRotation: 0 },
                     grid: { display: false }
                 },
                 y: { 
@@ -623,44 +550,52 @@ function updateDashboardChart(majorName, dataObj) {
             plugins: {
                 legend: { display: false }, 
                 tooltip: {
-                    titleFont: { size: isMobile ? 11 : (isTablet ? 12 : 13) },
-                    bodyFont: { size: isMobile ? 10 : (isTablet ? 11 : 12) },
-                    padding: isMobile ? 6 : 10
+                    titleFont: { size: isMobile ? 11 : 13 },
+                    bodyFont: { size: isMobile ? 10 : 12 },
+                    padding: 10
                 },
                 title: {
                     display: true,
                     text: `Dominan Love Language: ${majorName === "Semua" ? "Semua Jurusan" : getDisplayName(majorName)}`,
-                    font: { size: isMobile ? 12 : (isTablet ? 14 : 16), family: "'Poppins', sans-serif", weight: '600' },
+                    font: { size: isMobile ? 12 : 16, family: "'Poppins', sans-serif", weight: '600' },
                     color: '#D63384',
-                    padding: { bottom: isMobile ? 12 : (isTablet ? 14 : 16) }
+                    padding: { bottom: 16 }
                 }
             }
         }
     });
-
+    
+    // Update Insight & Calc initially
     const insightBox = document.getElementById("insightBox");
-    if (insightBox) {
-        insightBox.innerHTML = `<strong>Insight:</strong> ${generateInsight(dataObj, majorName, currentMode)}`;
-    }
-
-    // Populate calculation box
-    const calcDetails = generateCalculationDetails(majorName, dataObj, currentMode);
-    document.getElementById("calculationBox").innerHTML = calcDetails;
+    if (insightBox) insightBox.innerHTML = `<strong>Insight:</strong> ${generateInsight(dataObj, majorName)}`;
+    document.getElementById("calculationBox").innerHTML = generateCalculationDetails(majorName, dataObj);
 }
 
-// Auto Resize Listener (Menyesuaikan ulang saat HP diputar/layar berubah)
-let resizeTimeout;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-        // Reload dashboard chart when window is resized
-        if (currentMajor && currentData) {
-            updateDashboardChart(currentMajor, currentData);
-        }
-    }, 300); // Debounce resize events to avoid excessive re-renders
-});
+function generateInsight(dataObj, majorName) {
+    if (!dataObj || Object.keys(dataObj).length === 0) return 'Tidak ada data.';
+    let maxKey = Object.keys(dataObj).reduce((a,b) => dataObj[a] >= dataObj[b] ? a : b);
+    let maxVal = dataObj[maxKey];
+    
+    let name = majorName === "Semua" ? "Semua Jurusan" : getDisplayName(majorName);
+    return `Mayoritas mahasiswa <strong>${name}</strong> memiliki Love Language dominan <strong>${maxKey}</strong> (${maxVal} orang).`;
+}
 
-/* Toggle Calculation Box */
+function generateCalculationDetails(majorName, dataObj) {
+    const total = Object.values(dataObj).reduce((a, b) => a + b, 0);
+    const dominantCat = Object.keys(dataObj).reduce((a, b) => dataObj[a] > dataObj[b] ? a : b);
+    
+    let html = `<h3>📌 Perhitungan Statistik (${majorName === "Semua" ? "Total" : getDisplayName(majorName)})</h3>`;
+    html += `<div class="calculation-example">Total Responden: <strong>${total}</strong><br>`;
+    
+    Object.entries(dataObj).forEach(([cat, count]) => {
+        const pct = ((count / total) * 100).toFixed(1);
+        const style = cat === dominantCat ? 'color: #D63384; font-weight:bold;' : '';
+        html += `<span style="${style}">${cat}: ${count} (${pct}%)</span><br>`;
+    });
+    html += `</div>`;
+    return html;
+}
+
 function toggleCalculation() {
     const box = document.getElementById("calculationBox");
     const btn = document.getElementById("calcToggleBtn");
@@ -673,85 +608,13 @@ function toggleCalculation() {
     }
 }
 
-/* Generate Calculation Details */
-function generateCalculationDetails(majorName, dataObj, mode) {
-    return generateDominanCalculation(majorName, dataObj);
-}
-
-/* Generate Dominan Mode Calculation */
-function generateDominanCalculation(majorName, dataObj) {
-    const total = Object.values(dataObj).reduce((a, b) => a + b, 0);
-    const dominantCat = Object.keys(dataObj).reduce((a, b) => dataObj[a] > dataObj[b] ? a : b);
-    const dominantCount = dataObj[dominantCat];
-    const dominantPercent = ((dominantCount / total) * 100).toFixed(1);
-
-    let html = `
-        <h3>📌 Mode (Kategori Dominan)</h3>
-        <div class="calculation-formula">
-            Mode = kategori dengan frekuensi tertinggi
-        </div>
-        <p><strong>Definition:</strong> The love language preferred by most students in this group.</p>
-        <div class="calculation-example">
-            <strong>Distribution by category:</strong><br>
-    `;
-
-    Object.entries(dataObj).forEach(([cat, count]) => {
-        const pct = ((count / total) * 100).toFixed(1);
-        const highlight = cat === dominantCat ? ' <strong style="color: #D63384;">← DOMINANT</strong>' : '';
-        html += `${cat}: ${count} (${pct}%)${highlight}<br>`;
-    });
-
-    html += `
-            <br><strong>Result:</strong> ${dominantCat} is most preferred (${dominantCount}/${total} = ${dominantPercent}%)
-        </div>
-    `;
-
-    return html;
-}
-
-// Initialize card detail buttons: toggle description and expanded state
-function initCardDetails() {
-    document.querySelectorAll('.card-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const card = btn.closest('.simple-card');
-            if (!card) return;
-            const desc = card.querySelector('.card-desc');
-            const expanded = card.classList.toggle('expanded');
-            if (desc) desc.hidden = !expanded;
-            btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-            btn.textContent = expanded ? 'Close' : 'Details';
-        });
-    });
-}
-
-function bindFinderCta() {
-    const cta = document.querySelector('.finder-cta');
-    const input = document.getElementById('npmInput');
-    if (!cta || !input) return;
-
-    cta.addEventListener('click', () => {
-        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        input.focus({ preventScroll: true });
-    });
-}
-
-// Ensure handlers attach after DOM ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        initCardDetails();
-        bindFinderCta();
-        // Add calculation toggle button listener
-        const calcBtn = document.getElementById('calcToggleBtn');
-        if (calcBtn) {
-            calcBtn.addEventListener('click', toggleCalculation);
+// Auto Resize Listener
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (currentMajor && currentData) {
+            updateDashboardChart(currentMajor, currentData);
         }
-    });
-} else {
-    initCardDetails();
-    bindFinderCta();
-    // Add calculation toggle button listener
-    const calcBtn = document.getElementById('calcToggleBtn');
-    if (calcBtn) {
-        calcBtn.addEventListener('click', toggleCalculation);
-    }
-}
+    }, 300);
+});
