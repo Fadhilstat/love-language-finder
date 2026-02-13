@@ -10,15 +10,15 @@
 </head>
 <body>
     <div class="hearts" aria-hidden="true">
-        <span class="heart"></span>
-        <span class="heart"></span>
-        <span class="heart"></span>
-        <span class="heart"></span>
-        <span class="heart"></span>
-        <span class="heart"></span>
-        <span class="heart"></span>
-        <span class="heart"></span>
+        <span class="heart"></span> <span class="heart"></span> <span class="heart"></span>
+        <span class="heart"></span> <span class="heart"></span> <span class="heart"></span>
+        <span class="heart"></span> <span class="heart"></span> <span class="heart"></span>
+        <span class="heart"></span> <span class="heart"></span> <span class="heart"></span>
+        <span class="heart"></span> <span class="heart"></span> <span class="heart"></span>
+        <span class="heart"></span> <span class="heart"></span> <span class="heart"></span>
+        <span class="heart"></span> <span class="heart"></span>
     </div>
+
     <nav class="navbar topbar">
         <div class="nav-left">
             <label class="logo-upload">
@@ -39,7 +39,6 @@
 
     <main class="container">
 
-        <!-- FINDER PAGE -->
         <section id="finderPage" class="finder-page">
             <div class="finder-placeholder">
                 <h2>Discover Your Love Language</h2>
@@ -56,42 +55,38 @@
         </section>
 
 
-        <!-- HOME PAGE -->
         <section id="homePage">
             <header class="home-header">
                 <h1>Research Center Vol. 11: Love Language</h1>
 
-                <!-- Header description immediately under header -->
                 <div class="dashboard-desc">
                     <p>Love language adalah cara seseorang mengekspresikan dan menerima kasih sayang. Ada lima tipe utama: Words of Affirmation, Quality Time, Acts of Service, Receiving Gifts, dan Physical Touch. Apa love language dominan kamu?</p>
                     <p class="dashboard-desc-highlight"><strong>Jika kamu mengisi survei Research Center Volume 11, cek profil lengkapmu di halaman Find Your Love Language.</strong></p>
                 </div>
             </header>
 
-                <div id="dashboardContainer" class="dashboard-section">
-                                        <h2 class="dashboard-title">Dashboard Love Language Departemen Matematika FMIPA UI 2025</h2>
+            <div id="dashboardContainer" class="dashboard-section">
+                <h2 class="dashboard-title">Dashboard Love Language Departemen Matematika FMIPA UI 2025</h2>
 
-                                        <div id="majorTabs" class="tabs-container"></div>
+                <div id="majorTabs" class="tabs-container"></div>
 
+                <div class="dashboard-main">
+                    <div class="dashboard-left">
+                        <div class="chart-wrapper">
+                            <canvas id="llChart"></canvas>
+                        </div>
+                    </div>
 
+                    <div class="dashboard-right">
+                        <div id="insightBox" class="insight-box"></div>
 
-                                        <div class="dashboard-main">
-                                            <div class="dashboard-left">
-                                                <div class="chart-wrapper">
-                                                    <canvas id="llChart"></canvas>
-                                                </div>
-                                            </div>
+                        <button id="calcToggleBtn" class="calc-toggle-btn">📊 Show Calculation</button>
 
-                                            <div class="dashboard-right">
-                                                <div id="insightBox" class="insight-box"></div>
-
-                                                <button id="calcToggleBtn" class="calc-toggle-btn">📊 Show Calculation</button>
-
-                                                <div id="calculationBox" class="calculation-box" style="display: none;">
-                                                    <!-- Populated by JavaScript -->
-                                                </div>
-                                            </div>
-                                        </div>
+                        <div id="calculationBox" class="calculation-box" style="display: none;">
+                            </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </main>
