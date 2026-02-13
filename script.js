@@ -324,105 +324,6 @@ function getDisplayName(major) {
 
 // --- FUNGSI PENCARIAN (PIE CHART) ---
 function findStudent() {
-    const inputNpm = npmInput.value.trim();// ================================================================
-// BAGIAN 3: LOGIC & DASHBOARD (PASTE INI DI BAGIAN PALING BAWAH FILE)
-// ================================================================
-
-const searchBtn = document.getElementById('searchBtn');
-const npmInput = document.getElementById('npmInput');
-const resultContainer = document.getElementById('resultContainer');
-const majorTabs = document.getElementById('majorTabs');
-
-let dashboardChart = null; 
-let userPieChart = null;
-let currentMajor = "";
-let currentData = {};
-let currentMode = "dominan"; 
-
-document.addEventListener('DOMContentLoaded', () => {
-    initDashboard(); 
-
-    // --- PAGE SWITCH LOGIC ---
-    const navButtons = document.querySelectorAll('.nav-btn');
-    const homePage = document.getElementById('homePage');
-    const finderPage = document.getElementById('finderPage');
-
-    if (homePage && finderPage) {
-        homePage.style.display = 'block';
-        finderPage.style.display = 'none';
-    }
-
-    navButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            navButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const page = btn.dataset.page;
-            if (page === 'home') {
-                homePage.style.display = 'block';
-                finderPage.style.display = 'none';
-            } else {
-                homePage.style.display = 'none';
-                finderPage.style.display = 'block';
-            }
-        });
-    });
-
-    // --- LOGO PREVIEW ---
-    const logoImg1 = document.getElementById('logoImg1');
-    const logoImg2 = document.getElementById('logoImg2');
-    const logoUpload1 = document.getElementById('logoUpload1');
-    const logoUpload2 = document.getElementById('logoUpload2');
-
-    // Default logo logic
-    try {
-        if (logoImg1) { logoImg1.src = 'LOGO HD-removebg-preview.jpg'; logoImg1.style.display = 'block'; }
-        if (logoImg2) { logoImg2.src = 'Logo Biro Variansi.png'; logoImg2.style.display = 'block'; }
-    } catch (e) { console.warn(e); }
-
-    if (logoUpload1 && logoImg1) {
-        logoUpload1.addEventListener('change', (ev) => {
-            const f = ev.target.files && ev.target.files[0];
-            if (f) logoImg1.src = URL.createObjectURL(f);
-        });
-    }
-    if (logoUpload2 && logoImg2) {
-        logoUpload2.addEventListener('change', (ev) => {
-            const f = ev.target.files && ev.target.files[0];
-            if (f) logoImg2.src = URL.createObjectURL(f);
-        });
-    }
-    
-    // Add calculation toggle
-    const calcBtn = document.getElementById('calcToggleBtn');
-    if (calcBtn) {
-        calcBtn.addEventListener('click', toggleCalculation);
-    }
-    bindFinderCta();
-});
-
-// --- HELPER FUNCTIONS ---
-function bindFinderCta() {
-    const cta = document.querySelector('.finder-cta');
-    const input = document.getElementById('npmInput');
-    if (!cta || !input) return;
-    cta.addEventListener('click', () => {
-        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        input.focus({ preventScroll: true });
-    });
-}
-
-function getDisplayName(major) {
-    const displayMap = {
-        "Aktuaria": "Ilmu Aktuaria",
-        "Statistika": "Statistika",
-        "Matematika": "Matematika"
-    };
-    return displayMap[major] || major;
-}
-
-// --- FUNGSI PENCARIAN (PIE CHART) ---
-function findStudent() {
     const inputNpm = npmInput.value.trim();
     resultContainer.innerHTML = '';
 
@@ -431,10 +332,7 @@ function findStudent() {
         return;
     }
 
-    // DEBUG: Cek di console apakah data ditemukan
-    console.log("Mencari NPM:", inputNpm);
     const student = students.find(s => String(s.npm).trim() === String(inputNpm));
-    console.log("Hasil Pencarian:", student);
 
     if (student) {
         let typeKey = student.type;
@@ -476,6 +374,7 @@ function renderUserPieChart(percentages) {
     const width = window.innerWidth;
     const isMobile = width < 480;
     
+    // Sort Data
     const dataArray = Object.entries(percentages).map(([key, val]) => ({
         label: key,
         value: parseInt(val.replace('%', ''))
@@ -484,6 +383,7 @@ function renderUserPieChart(percentages) {
     let labels = dataArray.map(d => d.label);
     const dataValues = dataArray.map(d => d.value);
 
+    // Multiline Labels for Mobile Pie Chart
     if (isMobile) {
         labels = labels.map(label => {
             if (label === "Words of Affirmation") return "Words of\nAffirmation";
@@ -551,14 +451,17 @@ function initDashboard() {
         }
     });
 
+    // Custom Order: Matematika -> Statistika -> Aktuaria
     const customOrder = ["Matematika", "Statistika", "Aktuaria"];
     
+    // 1. Tombol Semua Jurusan
     const btnGlobal = document.createElement('button');
     btnGlobal.innerText = "Semua Jurusan";
     btnGlobal.className = 'tab-btn active'; 
     btnGlobal.onclick = () => { switchTab(btnGlobal, "Semua", globalStats); };
     majorTabs.appendChild(btnGlobal);
 
+    // 2. Tombol Per Jurusan (Sesuai Order)
     customOrder.forEach(majorKey => {
         if (stats[majorKey]) {
             const btn = document.createElement('button');
