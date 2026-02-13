@@ -20,7 +20,7 @@ body {
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    padding: 40px 20px;
+    padding: 20px 12px;
 }
 
 /* --- NAVBAR (Top bar with upload placeholder) --- */
@@ -31,15 +31,16 @@ body {
     left: 0;
     width: 100%;
     background: var(--card-bg);
-    padding: 12px 24px;
-    border-radius: 0 0 12px 12px;
+    padding: 10px 16px;
+    border-radius: 0 0 8px 8px;
     box-shadow: var(--shadow);
     border: 1px solid rgba(0,0,0,0.04);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     z-index: 50;
+    flex-wrap: wrap;
 }
 
 .nav-left { display: flex; align-items: center; gap: 12px; }
@@ -47,10 +48,10 @@ body {
 .logo-upload { display: inline-flex; align-items: center; cursor: pointer; }
 
 .logo-placeholder {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    background: #ffffff; /* ensure consistent white background */
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,7 +59,7 @@ body {
     font-weight: 700;
     border: 1px solid rgba(214,51,132,0.08);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     overflow: hidden;
 }
 
@@ -73,23 +74,23 @@ body {
 .nav-brand-text {
     font-family: var(--font-main);
     font-weight: 700;
-    color: var(--text-dark);
     color: var(--primary-color);
-    margin-left: 8px;
-    font-size: 0.98rem;
+    margin-left: 6px;
+    font-size: 0.85rem;
     white-space: nowrap;
 }
 
 .nav-right { display: flex; gap: 10px; align-items: center; }
 
 .nav-btn {
-    padding: 8px 14px;
+    padding: 6px 12px;
     border-radius: 999px;
     border: 0;
     background: transparent;
     color: var(--text-dark);
     cursor: pointer;
     font-weight: 600;
+    font-size: 0.9rem;
     transition: background 0.18s, transform 0.08s;
 }
 
@@ -99,24 +100,25 @@ body {
 
 /* Content offset so the fixed topbar doesn't overlap the container */
 .container {
-    max-width: 1400px; /* Lebar konten maksimal diperlebar untuk full space */
+    max-width: 1400px;
     width: 100%;
     margin-left: 0;
-    margin-top: 84px; /* space for topbar */
+    margin-top: 70px;
+    padding: 0 12px;
 }
 
 /* --- HEADER --- */
-header { text-align: center; margin-bottom: 30px; }
-header h1 { color: var(--primary-color); margin-bottom: 10px; font-weight: 700; }
-header p { color: var(--text-gray); font-size: 0.95rem; }
+header { text-align: center; margin-bottom: 24px; }
+header h1 { color: var(--primary-color); margin-bottom: 10px; font-weight: 700; font-size: 1.6rem; }
+header p { color: var(--text-gray); font-size: 0.9rem; }
 
 /* Finder placeholder text */
 .finder-placeholder {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 240, 246, 0.7));
-    padding: 40px 30px;
-    border-radius: 24px;
-    box-shadow: 0 12px 30px rgba(214, 51, 132, 0.15);
-    margin-bottom: 40px;
+    padding: 28px 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(214, 51, 132, 0.15);
+    margin-bottom: 28px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -134,7 +136,7 @@ header p { color: var(--text-gray); font-size: 0.95rem; }
 }
 
 .finder-placeholder h2 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 10px;
@@ -143,9 +145,9 @@ header p { color: var(--text-gray); font-size: 0.95rem; }
 }
 
 .finder-placeholder p {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-gray);
-    line-height: 1.8;
+    line-height: 1.6;
     margin: 0;
     position: relative;
     z-index: 1;
@@ -178,28 +180,28 @@ header p { color: var(--text-gray); font-size: 0.95rem; }
 .dashboard-desc {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 240, 246, 0.6));
     border: 1px solid rgba(255, 143, 171, 0.25);
-    border-radius: 16px;
-    padding: 20px 24px;
-    box-shadow: 0 4px 12px rgba(214, 51, 132, 0.08);
-    margin-top: 12px;
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 3px 8px rgba(214, 51, 132, 0.08);
+    margin-top: 10px;
 }
 
 .dashboard-desc p {
     color: var(--text-gray);
-    font-size: 0.95rem;
-    line-height: 1.75;
+    font-size: 0.9rem;
+    line-height: 1.6;
     margin: 0;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
 }
 
 .dashboard-desc-highlight {
     color: var(--primary-color) !important;
-    font-size: 1rem !important;
-    margin-top: 12px !important;
-    padding: 12px 16px;
+    font-size: 0.95rem !important;
+    margin-top: 10px !important;
+    padding: 10px 12px;
     background: linear-gradient(90deg, rgba(255, 143, 171, 0.15), rgba(255, 240, 246, 0.2));
     border-left: 4px solid var(--accent-color);
-    border-radius: 8px;
+    border-radius: 6px;
 }
 
 .dashboard-desc-highlight strong {
@@ -209,22 +211,22 @@ header p { color: var(--text-gray); font-size: 0.95rem; }
 /* --- SEARCH BOX --- */
 .search-box {
     display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
+    gap: 8px;
+    margin-bottom: 24px;
     background: white;
-    padding: 15px;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    padding: 12px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
 input {
     flex: 1;
-    padding: 14px;
+    padding: 12px;
     border: none;
     background: #fff5f9;
-    border-radius: 12px;
+    border-radius: 10px;
     outline: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-family: var(--font-main);
     transition: border-color 0.3s;
 }
@@ -235,14 +237,16 @@ input:focus {
 }
 
 button#searchBtn {
-    padding: 14px 24px;
+    padding: 12px 18px;
     background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 600;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: transform 0.2s, opacity 0.2s;
+    white-space: nowrap;
 }
 
 button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
@@ -250,11 +254,11 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 /* --- RESULT CARD (KARTU HASIL) --- */
 .card {
     background: var(--card-bg);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 20px;
+    border-radius: 16px;
     box-shadow: var(--shadow);
     animation: slideUp 0.5s ease;
-    margin-bottom: 40px;
+    margin-bottom: 28px;
     border: 1px solid #FFF;
     transition: all 0.3s ease;
 }
@@ -270,14 +274,14 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
     margin-bottom: 20px;
     text-align: center;
 }
-.student-info h2 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 5px; }
+.student-info h2 { color: var(--primary-color); font-size: 1.5rem; margin-bottom: 5px; }
 .student-info .major { color: var(--text-gray); font-weight: 500; background: #FFF0F5; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
 
 /* Judul Love Language */
 .ll-title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: var(--text-dark);
-    margin: 20px 0 5px;
+    margin: 16px 0 5px;
     text-align: center;
 }
 
@@ -309,32 +313,32 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 }
 
 /* --- DETAIL SECTION (TEXT) --- */
-.section-block { margin-bottom: 25px; }
+.section-block { margin-bottom: 20px; }
 .section-block h3 {
     color: var(--primary-color);
-    font-size: 1rem;
+    font-size: 0.95rem;
     text-transform: uppercase;
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    letter-spacing: 0.4px;
     border-left: 3px solid var(--primary-color);
     padding-left: 10px;
 }
-.section-block p, .section-block li { font-size: 0.95rem; line-height: 1.6; color: var(--text-gray); }
-.section-block ul { margin-left: 20px; list-style-type: disc; }
-.section-block li { margin-bottom: 5px; }
+.section-block p, .section-block li { font-size: 0.9rem; line-height: 1.5; color: var(--text-gray); }
+.section-block ul { margin-left: 16px; list-style-type: disc; }
+.section-block li { margin-bottom: 4px; }
 
 /* --- DASHBOARD SECTION (CHART AREA) --- */
 .dashboard-section {
-    margin-top: 50px;
-    border-top: 2px dashed #FFC2D1; /* Garis pemisah putus-putus */
-    padding-top: 40px;
+    margin-top: 32px;
+    border-top: 2px dashed #FFC2D1;
+    padding-top: 28px;
 }
 
 .dashboard-title {
     text-align: center;
     color: var(--primary-color);
-    margin-bottom: 25px;
-    font-size: 1.4rem;
+    margin-bottom: 18px;
+    font-size: 1.3rem;
 }
 
 .dashboard-title::after {
@@ -360,21 +364,21 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 .tabs-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 30px;
-    flex-wrap: wrap; /* Agar tombol turun ke bawah di HP */
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
 }
 
 /* Gaya Tombol Jurusan */
 .tab-btn {
-    padding: 10px 20px;
+    padding: 8px 16px;
     border: 2px solid var(--primary-color);
     background: transparent;
     color: var(--primary-color);
-    border-radius: 25px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.3s ease;
     font-family: var(--font-main);
 }
@@ -393,23 +397,23 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 /* Container Grafik (Canvas Wrapper) */
 .chart-wrapper {
     background: white;
-    padding: 20px;
-    border-radius: 20px;
+    padding: 16px;
+    border-radius: 16px;
     box-shadow: var(--shadow);
     width: 100%;
-    height: 400px; /* Tinggi pasti agar grafik tidak gepeng */
+    height: 350px;
     position: relative;
     border: 1px solid #f0f0f0;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 /* Dashboard main layout: chart 70% + summary 30% */
 .dashboard-main {
     display: grid;
-    grid-template-columns: 7fr 3fr;
-    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
     align-items: start;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .dashboard-left .chart-wrapper {
@@ -437,13 +441,13 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 
 .insight-box {
     background: white;
-    padding: 18px;
-    border-radius: 12px;
+    padding: 14px;
+    border-radius: 10px;
     box-shadow: var(--shadow);
     border-left: 4px solid var(--accent-color);
     color: var(--text-gray);
-    line-height: 1.6;
-    font-size: 0.92rem;
+    line-height: 1.5;
+    font-size: 0.88rem;
 }
 
 /* Reliability Badge */
@@ -465,9 +469,9 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 /* Wadah Pie Chart di Kartu User */
 .user-chart-container {
     position: relative;
-    height: 300px; /* Tinggi chart */
+    height: 300px;
     width: 100%;
-    margin: 20px 0;
+    margin: 16px 0;
     display: flex;
     justify-content: center;
 }
@@ -480,46 +484,47 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Mobile */
+/* Responsive Mobile - Extra Small (max 480px) */
 @media (max-width: 480px) {
-    body { padding: 20px 15px; }
-    .card { padding: 20px; }
-    header h1 { font-size: 1.5rem; }
-    .chart-wrapper { height: 300px; } /* Grafik lebih pendek di HP */
-    .tab-btn { padding: 8px 15px; font-size: 0.8rem; }
+    body { padding: 16px 10px; }
+    .container { margin-top: 60px; padding: 0 10px; }
+    .card { padding: 16px; }
+    header h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    .chart-wrapper { height: 280px; }
+    .tab-btn { padding: 6px 12px; font-size: 0.8rem; }
+    .dashboard-right { gap: 12px; }
+    .search-box { padding: 10px; gap: 6px; }
+    input { padding: 10px; font-size: 0.9rem; }
+    button#searchBtn { padding: 10px 14px; font-size: 0.9rem; }
+    .finder-placeholder { padding: 20px 16px; margin-bottom: 20px; }
+    .finder-placeholder h2 { font-size: 1.3rem; }
+    .finder-placeholder p { font-size: 0.85rem; }
+    .user-chart-container { height: 280px; }
+    .insight-box { font-size: 0.85rem; padding: 12px; }
 }
 
-/* Responsive: collapse sidebar to top bar on small screens */
-@media (max-width: 900px) {
-    .navbar {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 100%;
-        max-width: 700px;
-        margin: 0 auto 18px auto;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 16px;
-    }
-
-    /* Hide brand text on smaller screens to save space */
-    .nav-brand-text { display: none; }
-
-    .nav-btn { padding: 8px 12px; border-radius: 20px; }
-
-    .container { margin-left: 0; }
-
-    .dashboard-main {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    /* smaller adjustments for mobile */
+/* Responsive Tablet (768px and below) */
+@media (max-width: 768px) {
     .navbar { padding: 10px 12px; }
-    .nav-btn { font-size: 0.85rem; padding: 8px 10px; }
+    .nav-brand-text { font-size: 0.8rem; }
+    .nav-btn { padding: 6px 10px; font-size: 0.85rem; }
+    .container { margin-top: 65px; }
+    .dashboard-main { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.5rem; }
+    .chart-wrapper { height: 320px; }
+    .home-header { margin-bottom: 20px; }
+    .dashboard-desc { padding: 16px 20px; }
+}
+
+/* Responsive Small Mobile (640px and below) */
+@media (max-width: 640px) {
+    .logo-placeholder { width: 36px; height: 36px; }
+    .navbar { padding: 8px 10px; }
+    .nav-left { gap: 8px; }
+    .nav-right { gap: 6px; }
+    .nav-btn { padding: 5px 10px; font-size: 0.8rem; }
+    .dashboard-main { gap: 12px; }
+    .card { padding: 16px; margin-bottom: 20px; }
 }
 
 /* Floating hearts background — heart shape fix + increased visibility */
@@ -752,14 +757,15 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
     background-color: #D63384;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 16px;
     border-radius: 8px;
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 12px;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .calc-toggle-btn:hover {
@@ -772,27 +778,27 @@ button#searchBtn:hover { opacity: 0.9; transform: translateY(-2px); }
 .calculation-box {
     background-color: #fff5f9;
     border: 2px solid #D63384;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 15px;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 12px;
     font-family: 'Poppins', sans-serif;
 }
 
 .calculation-box h3 {
     color: #D63384;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    margin: 15px 0 10px 0;
-    padding-bottom: 8px;
+    margin: 12px 0 8px 0;
+    padding-bottom: 6px;
     border-bottom: 2px dotted #FF8FAB;
 }
 
 .calculation-box p, 
 .calculation-box div {
     color: #333;
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 8px 0;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 6px 0;
 }
 
 .calculation-formula {
