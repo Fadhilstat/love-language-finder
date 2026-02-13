@@ -394,14 +394,27 @@ function renderUserPieChart(percentages) {
     const width = window.innerWidth;
     const isMobile = width < 480;
     
+    // 1. URUTKAN DATA DARI BESAR KE KECIL
+    // Agar warna pink tua selalu jatuh ke nilai tertinggi
     const dataArray = Object.entries(percentages).map(([key, val]) => ({
         label: key,
         value: parseInt(val.replace('%', ''))
-    })).sort((a, b) => b.value - a.value);
+    })).sort((a, b) => b.value - a.value); // Sort Descending
 
     let labels = dataArray.map(d => d.label);
     const dataValues = dataArray.map(d => d.value);
 
+    // 2. TENTUKAN PALET WARNA PINK (Tua -> Muda)
+    // Index 0 (Dominan) dapat warna pertama (paling tua)
+    const pinkPalette = [
+        '#AD1457', // Pink Tua Banget (Dominan)
+        '#D63384', // Pink Utama
+        '#FF69B4', // Hot Pink
+        '#FF8FAB', // Pink Muda (Accent)
+        '#FFC2D1'  // Pink Paling Lembut (Minoritas)
+    ];
+
+    // Label Multiline untuk Tampilan HP
     if (isMobile) {
         labels = labels.map(label => {
             if (label === "Words of Affirmation") return "Words of\nAffirmation";
@@ -421,9 +434,10 @@ function renderUserPieChart(percentages) {
             labels: labels,
             datasets: [{
                 data: dataValues,
-                backgroundColor: ['#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF'],
-                borderColor: '#fff',
-                borderWidth: 2
+                backgroundColor: pinkPalette, // Gunakan palet pink baru
+                borderColor: '#ffffff',
+                borderWidth: 2,
+                hoverOffset: 10 // Efek pop-out saat di-hover
             }]
         },
         options: {
@@ -436,10 +450,14 @@ function renderUserPieChart(percentages) {
                     labels: { 
                         font: { family: "'Poppins', sans-serif", size: isMobile ? 10 : 12 },
                         boxWidth: isMobile ? 10 : 12,
-                        padding: isMobile ? 10 : 20
+                        padding: isMobile ? 10 : 20,
+                        usePointStyle: true // Ubah kotak legend jadi bulat agar lebih manis
                     }
                 },
                 tooltip: {
+                    backgroundColor: 'rgba(173, 20, 87, 0.9)', // Tooltip warna pink tua
+                    padding: 12,
+                    cornerRadius: 8,
                     callbacks: { label: (ctx) => ` ${ctx.label}: ${ctx.raw}%` }
                 }
             }
@@ -641,3 +659,4 @@ window.addEventListener('resize', () => {
         }
     }, 300);
 });
+
